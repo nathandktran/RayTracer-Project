@@ -1,0 +1,8 @@
+C:/Users/Nathan/Documents/Projects/RayTracer/build/CMakeFiles/RayTracer.dir
+C:/Users/Nathan/Documents/Projects/RayTracer/build/CMakeFiles/Experimental.dir
+C:/Users/Nathan/Documents/Projects/RayTracer/build/CMakeFiles/Nightly.dir
+C:/Users/Nathan/Documents/Projects/RayTracer/build/CMakeFiles/Continuous.dir
+C:/Users/Nathan/Documents/Projects/RayTracer/build/CMakeFiles/NightlyMemoryCheck.dir
+C:/Users/Nathan/Documents/Projects/RayTracer/build/CMakeFiles/RUN_TESTS.dir
+C:/Users/Nathan/Documents/Projects/RayTracer/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Nathan/Documents/Projects/RayTracer/build/CMakeFiles/ZERO_CHECK.dir
