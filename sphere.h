@@ -31,6 +31,8 @@ class Sphere : public Hittable {
 
       rec.t = root;
       rec.p = r.at(rec.t);
+      Vec3 outward_normal = (rec.p - center) / radius;
+      rec.setFaceNormal(r, outward_normal);
       rec.normal = (rec.p - center) / radius;
 
       return true;
