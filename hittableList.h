@@ -3,8 +3,8 @@
 
 #include "hittable.h"
 
-#include <memory>
 #include <vector>
+#include <iostream>
 
 using std::make_shared;
 using std::shared_ptr;
@@ -22,13 +22,13 @@ class HittableList : public Hittable {
       objects.push_back(object);
     }
 
-    bool hit(const Ray& r, double ray_tmin, double ray_tmax, HitRecord& rec) const override {
+    bool hit(const Ray& r, Interval ray_t, HitRecord& rec) const override {
       HitRecord temp_rec;
       bool hit_anything = false;
-      auto curr_closest = ray_tmax;
+      auto curr_closest = ray_t.max;
 
       for (const auto& object : objects) {
-        if (object->hit(r, ray_tmin, curr_closest, temp_rec)) {
+        if (object->hit(r, Interval(ray_t.min, curr_closest), temp_rec)) {
           hit_anything = true;
           curr_closest = temp_rec.t;
           rec = temp_rec;
