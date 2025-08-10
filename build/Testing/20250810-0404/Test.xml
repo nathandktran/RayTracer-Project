@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Win32-MSBuild"
+	BuildStamp="20250810-0404-Experimental"
+	Name="DESKTOP-T12KL6F"
+	Generator="ctest-3.31.5"
+	CompilerName="C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/cl.exe"
+	CompilerVersion="19.42.34436.0"
+	OSName="Windows"
+	Hostname="DESKTOP-T12KL6F"
+	OSRelease=" Personal"
+	OSVersion=" (Build 26100)"
+	OSPlatform="AMD64"
+	Is64Bits="1"
+	VendorString="AuthenticAMD"
+	VendorID="Advanced Micro Devices"
+	FamilyID="15"
+	ModelID="1"
+	ModelName="AMD Ryzen 7 7700X 8-Core Processor             "
+	ProcessorCacheSize="64"
+	NumberOfLogicalCPU="16"
+	NumberOfPhysicalCPU="8"
+	TotalVirtualMemory="48204"
+	TotalPhysicalMemory="31820"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="4491"
+	>
+	<Testing>
+		<StartDateTime>Aug 10 02:00 Central Daylight Time</StartDateTime>
+		<StartTestTime>1754809208</StartTestTime>
+		<TestList/>
+		<EndDateTime>Aug 10 02:00 Central Daylight Time</EndDateTime>
+		<EndTestTime>1754809208</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>
