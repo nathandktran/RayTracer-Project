@@ -47,11 +47,18 @@ class Camera {
       pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
     }
 
-    Color ray_color(const Ray& r, const Hittable& world) const {
-      HitRecord rec;
-      if (world.hit(r, Interval(0, infinity), rec)) {
-        return 0.5 * (rec.normal + Color(1, 1, 1));
+    Color ray_color(const Ray& r, int depth, const Hittable& world) const {
+      // Stop gathering light after exceeding ray bounces
+      if (depth <= 0) {
+        return Color(0, 0, 0);
       }
+
+      HitRecord rec;
+      if (world.hit(r, Interval(0.001, infinity), rec)) {
+        Vec3 direction = rec.normal + random_unit_vector();
+        return 0.5 * ray_color(Ray(rec.p, direction), depth - 1, world);
+      }
+
       Vec3 unit_direction = unit_vector(r.direction());
       auto a = 0.5 * (unit_direction.y() + 1.0);
       return (1.0 - a) * Color(1.0, 1.0, 1.0) + a * Color(0.5, 0.7, 1.0); 
@@ -81,6 +88,7 @@ class Camera {
     double aspect_ratio = 1.0;  // Ratio of image width over height
 	  int image_width = 100;      // Rendered image width in pixel count
     int samples_per_pixel = 10; // Count of random samples per pixel for AA
+    int max_depth = 10;         // Max number of recursive child rays
 
     void render(const Hittable& world) {
       initialize();
@@ -93,7 +101,7 @@ class Camera {
           Color pixel_color(0, 0, 0);
           for (int sample = 0; sample < samples_per_pixel; sample++) {
             Ray r = get_ray(i, j);
-            pixel_color += ray_color(r, world);
+            pixel_color += ray_color(r, max_depth, world);
           }
           write_color(std::cout, pixel_samples_scale * pixel_color);
         }
