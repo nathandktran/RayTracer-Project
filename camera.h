@@ -4,6 +4,7 @@
 #include "hittable.h"
 #include <iostream>
 #include "general.h"
+#include "material.h"
 
 using namespace std;
 
@@ -55,8 +56,12 @@ class Camera {
 
       HitRecord rec;
       if (world.hit(r, Interval(0.001, infinity), rec)) {
-        Vec3 direction = rec.normal + random_unit_vector();
-        return 0.5 * ray_color(Ray(rec.p, direction), depth - 1, world);
+        Ray scattered;
+        Color atten;
+        if (rec.mat->scatter(r, rec, atten, scattered)) {
+          return atten * ray_color(scattered, depth - 1, world);
+        }
+        return Color(0, 0, 0);
       }
 
       Vec3 unit_direction = unit_vector(r.direction());
