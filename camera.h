@@ -16,6 +16,7 @@ class Camera {
     Vec3 pixel_delta_u;           // Offset to pixel to the right
     Vec3 pixel_delta_v;           // Offset to pixel below
     double pixel_samples_scale;   // Color scale factor for a sum of pixel samples
+    Vec3 u, v, w;                 // Camera frame basis vectors
 
     void initialize() {
       image_height = int(image_width / aspect_ratio);
@@ -23,27 +24,33 @@ class Camera {
 
       pixel_samples_scale = 1.0 / samples_per_pixel;
 
-      camera_center = Point3(0, 0, 0);
+      camera_center = lookfrom;
 
       // Viewport dimensions
-      auto focal_length = 1.0;
-      auto viewport_height = 2.0;
+      auto focal_length = (lookfrom - lookat).length();
+      auto theta = degrees_to_radians(vfov);
+      auto h = std::tan(theta / 2);
+      auto viewport_height = 2 * h * focal_length;
       auto viewport_width = viewport_height * (double(image_width) / image_height);
+
+      // Calculate the u, v, w unit basis vectors for the camera coordinate frame
+      w = unit_vector(lookfrom - lookat);
+      u = unit_vector(cross(vup, w));
+      v = cross(w, u);
 
       // Calculate vectors across the viewport edges
       // Horizontal
-      auto viewport_u = Vec3(viewport_width, 0, 0);
+      auto viewport_u = viewport_width * u; // Vector across viewport horizontal edge
 
       // Vertical
-      auto viewport_v = Vec3(0, -viewport_height, 0);
+      auto viewport_v = viewport_height * -v; // Vector down viewport vertical edge
 
       // Calc delta vectors between pixels
       pixel_delta_u = viewport_u / image_width;
       pixel_delta_v = viewport_v / image_height;
 
       // Find upper left pixel
-      auto viewport_upper_left = camera_center - Vec3(0, 0, focal_length)
-                                - viewport_u / 2 - viewport_v / 2;
+      auto viewport_upper_left = camera_center - (focal_length * w) - viewport_u / 2 - viewport_v / 2;
       
       pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
     }
@@ -94,6 +101,11 @@ class Camera {
 	  int image_width = 100;      // Rendered image width in pixel count
     int samples_per_pixel = 10; // Count of random samples per pixel for AA
     int max_depth = 10;         // Max number of recursive child rays
+
+    double vfov = 90;                   // Vertical view angle (field of view)
+    Point3 lookfrom = Point3(0, 0, 0);  // Point cam is looking from
+    Point3 lookat = Point3(0, 0, -1);   // Point cam is looking at
+    Point3 vup = Vec3(0, 1, 0);         // Camera-relative "up" direction
 
     void render(const Hittable& world) {
       initialize();
