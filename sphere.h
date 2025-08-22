@@ -12,15 +12,26 @@ class Sphere : public Hittable {
     Ray center;
     double radius;
     shared_ptr<Material> mat;
+    AABB bbox;
 
   public:
     // Stationary
     Sphere(const Point3& static_center, double radius, shared_ptr<Material> mat)
-        : center(static_center, Vec3(0, 0, 0)), radius(std::fmax(0, radius)), mat(mat) {}
+        : center(static_center, Vec3(0, 0, 0)), radius(std::fmax(0, radius)), mat(mat) {
+      auto rvec = Vec3(radius, radius, radius);
+      bbox = AABB(static_center - rvec, static_center + rvec);
+
+    }
 
     // Moving
     Sphere(const Point3& center1, const Point3& center2,  double radius, shared_ptr<Material> mat)
-        : center(center1, center2 - center1), radius(std::fmax(0, radius)), mat(mat) {}
+        : center(center1, center2 - center1), radius(std::fmax(0, radius)), mat(mat) {
+      auto rvec = Vec3(radius, radius, radius);
+      AABB box1(center.at(0) - rvec, center.at(0) + rvec);
+      AABB box2(center.at(1) - rvec, center.at(1) + rvec);
+      bbox = AABB(box1, box2);
+
+    }
 
     bool hit(const Ray& r, Interval ray_t, HitRecord& rec) const override {
       Point3 curr_center = center.at(r.time());
